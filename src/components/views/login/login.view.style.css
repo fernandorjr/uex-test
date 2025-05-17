@@ -1,0 +1,61 @@
+.login-card {
+  width: 390px;
+  background-color: var(--md-sys-color-surface);
+  overflow: hidden;
+  padding: 80px 30px 20px;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.login-form {
+  width: 100%;
+}
+
+.login-form-title {
+  display: block;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.login-form-subtitle {
+  display: block;
+  font-size: 1rem;
+  color: #666666;
+  text-align: center;
+}
+
+.login-form-inputs-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 3rem 0;
+  gap: 2rem;
+}
+
+.login-form-btn-login {
+  width: 100%;
+}
+
+md-filled-button {
+  width: 100%;
+}
+
+.login-form-btn-group {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6rem;
+}
+
+.login-form-btn-group span {
+  font-size: 0.9rem;
+  cursor: pointer;
+}
