@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--md-sys-color-background);
+  font-family: var(--md-sys-typescale-body-large-font, sans-serif);
+}
+
+* {
+  box-sizing: border-box;
+  outline: none;
+  color: var(--md-sys-color-primary);
+}
+
+:root {
+  /* Tipografia base */
+  --md-sys-typescale-body-large-font: 'Outfit', sans-serif;
+
+  /* Cores principais */
+  --md-sys-color-primary: #4f9cf9;
+  --md-sys-color-on-primary: #ffffff;
+
+  --md-sys-color-secondary: #9c4dcc;
+  --md-sys-color-on-secondary: #ffffff;
+
+  --md-sys-color-tertiary: #7d5260;
+  --md-sys-color-on-tertiary: #ffffff;
+
+  /* Plano de fundo e superfícies */
+  --md-sys-color-background: #121212;
+  --md-sys-color-on-background: #ffffff;
+
+  --md-sys-color-surface: #1e1e1e;
+  --md-sys-color-on-surface: #ffffff;
+
+  --md-sys-color-surface-variant: #2c2c2c;
+  --md-sys-color-on-surface-variant: #cfcfcf;
+
+  /* Sucesso */
+  --md-sys-color-success: #00c853;
+  --md-sys-color-on-success: #ffffff;
+  --md-sys-color-success-container: #1b5e20;
+  --md-sys-color-on-success-container: #c8e6c9;
+
+  /* Erro */
+  --md-sys-color-error: #ff5252;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410e0b;
+
+  /* Bordas / outlines */
+  --md-sys-color-outline: #444444;
+
+  /* Scrollbar / efeitos */
+  --md-sys-color-scrollbar: #4f4f4f;
+}
