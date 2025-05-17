@@ -1,0 +1,1 @@
+export {default as AuthLayout} from "./auth/auth.layout.component"
