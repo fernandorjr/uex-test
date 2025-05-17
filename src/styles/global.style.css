@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
-
 html,
 body {
   margin: 0;
@@ -17,7 +15,7 @@ body {
 
 :root {
   /* Tipografia base */
-  --md-sys-typescale-body-large-font: 'Outfit', sans-serif;
+  --md-sys-typescale-body-large-font: 'Popins', sans-serif;
 
   /* Cores principais */
   --md-sys-color-primary: #4f9cf9;
@@ -56,4 +54,8 @@ body {
 
   /* Scrollbar / efeitos */
   --md-sys-color-scrollbar: #4f4f4f;
+}
+
+md-outlined-text-field {
+  transition: --md-sys-color-outline 0.2s ease-in-out;
 }
