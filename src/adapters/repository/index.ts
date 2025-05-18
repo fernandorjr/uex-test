@@ -1,0 +1,1 @@
+export { default as RepositoryAdapter } from './repository.adapter'

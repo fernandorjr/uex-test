@@ -1,0 +1,1 @@
+export { default as LocalStorageAdapter } from './local-storage.adapter'
