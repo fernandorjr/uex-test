@@ -1,10 +1,14 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react'
-import type { IRegisterCredentials, TErrorRegisterForm } from './register.page.interface'
-import { validationService } from '@/modules/validation'
-import './register.page.style.css'
+
 import { useNavigate } from '@/hooks'
 import { ERoutes } from '@/tokens/routes'
+import { validationService } from '@/modules/validation'
+
+import { AuthFormCard } from '@/components/common'
+
+import './register.view.style.css'
+import type { IRegisterCredentials, TErrorRegisterForm } from './register.view.interface'
 
 const RegisterView = () => {
   const { navigate } = useNavigate()
@@ -44,7 +48,6 @@ const RegisterView = () => {
     }
 
     if (name === 'email') {
-      // usa o serviço de validação existente
       message = validationService.validate('email', value, true) || ''
     }
 
@@ -53,7 +56,6 @@ const RegisterView = () => {
     }
 
     if (name === 'confirmPassword') {
-      // compara com a senha atual
       message = comparePasswords(credentials.password, value)
     }
 
@@ -73,13 +75,8 @@ const RegisterView = () => {
   }
 
   return (
-    <div className="register-card">
+    <AuthFormCard title="Cadastro">
       <form className="w-100" onSubmit={handleSubmit}>
-        <div className='register-form-title-wrapper'>
-          <md-icon className="register-form-title-icon" slot="leading-icon">checkbook</md-icon>
-          <span className="register-form-title">Cadastro</span>
-        </div>
-
         <div className="register-form-inputs-wrapper">
           <md-outlined-text-field
             name="email"
@@ -162,7 +159,7 @@ const RegisterView = () => {
           </span>
         </div>
       </form>
-    </div>
+    </AuthFormCard>
   )
 }
 
