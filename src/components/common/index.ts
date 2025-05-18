@@ -4,3 +4,4 @@ export { default as ContactDetails } from './contact-details/contact-details.com
 export { default as Map } from './map/map.component';
 export { default as Header } from './header/header.component';
 export { default as ModalAddContact } from './modal-add-contact/modal-add-contact.component';
+export { default as ModalContactDetails } from './modal-contact-details/modal-contact-details.component';

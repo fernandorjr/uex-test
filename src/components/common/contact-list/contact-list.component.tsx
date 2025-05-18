@@ -260,7 +260,7 @@ export default function ContactList({ onSelect }: Props) {
               <md-list-item key={c.id} type="button" class="contact-list-item" onclick={() => onSelect(c)}>
                 <md-icon slot="start">account_circle</md-icon>
                 <span slot="headline">{c.nome}</span>
-                <span slot="supporting-text">
+                <span slot="supporting-text" className='supporting-text'>
                   CPF: {c.cpf} • {c.telefone}
                 </span>
               </md-list-item>

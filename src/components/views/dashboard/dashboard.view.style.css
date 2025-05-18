@@ -23,3 +23,19 @@
   color: var(--md-sys-color-on-surface);
   overflow-y: auto;
 }
+
+@media (max-width: 576px) {
+  .contacts-panel {
+    width: 100%;
+    border-right: none;
+  }
+  .details-panel {
+    display: none;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 991px) {
+  .contacts-panel {
+    width: 300px;
+  }
+}
