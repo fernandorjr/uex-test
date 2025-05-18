@@ -3,3 +3,4 @@ export { default as ContactList } from './contact-list/contact-list.component';
 export { default as ContactDetails } from './contact-details/contact-details.component';
 export { default as Map } from './map/map.component';
 export { default as Header } from './header/header.component';
+export { default as ModalAddContact } from './modal-add-contact/modal-add-contact.component';

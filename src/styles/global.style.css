@@ -90,8 +90,21 @@ md-outlined-text-field {
   background: transparent;
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--md-sys-color-scrollbar) transparent;
+}
+
+md-dialog {
+  --md-dialog-container-color: var(--md-sys-color-surface);
+  --md-dialog-headline-color: var(--md-sys-color-primary);
+  --md-dialog-supporting-text-color: var(--md-sys-color-on-surface);
+  --md-dialog-actions-color: var(--md-sys-color-primary);
+}
+
+md-dialog::part(container) {
+  background-color: var(--md-sys-color-surface) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  border-radius: 16px;
+  padding: 0;
 }
