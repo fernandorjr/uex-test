@@ -1,24 +1,34 @@
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-import { ERoutes } from '../tokens/routes'
-import { AppLayout, AuthLayout } from '@/components/layout'
-import { DashboardPage, ProfilePage } from '@/pages/app'
-import { LoginPage, RecoveryPasswordPage, RegisterPage } from '@/pages/auth'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ERoutes } from '../tokens/routes';
+import { AuthLayout, AppLayout } from '@/components/layout';
+
+import { PublicRoute } from './public-route';
+import { PrivateRoute } from './private-route';
+import { LoginPage, RegisterPage, RecoveryPasswordPage } from '@/pages/auth';
+import { DashboardPage, ProfilePage } from '@/pages/app';
 
 const RouterApp = () => {
   return (
     <Router>
       <Routes>
-        <Route path="*" element={<Navigate to={ERoutes.LOGIN} />} />
+        {/* default redirect */}
+        <Route path="*" element={<Navigate to={ERoutes.LOGIN} replace />} />
 
-        <Route element={<AuthLayout />}>
-          <Route path={ERoutes.LOGIN} element={<LoginPage />} />
-          <Route path={ERoutes.REGISTER} element={<RegisterPage />} />
-          <Route path={ERoutes.RECOVERY_PASSWORD} element={<RecoveryPasswordPage />} />
+        {/* rotas públicas */}
+        <Route element={<PublicRoute />}>
+          <Route element={<AuthLayout />}>
+            <Route path={ERoutes.LOGIN} element={<LoginPage />} />
+            <Route path={ERoutes.REGISTER} element={<RegisterPage />} />
+            <Route path={ERoutes.RECOVERY_PASSWORD} element={<RecoveryPasswordPage />} />
+          </Route>
         </Route>
 
-        <Route element={<AppLayout />}>
-          <Route path={ERoutes.DASHBOARD} element={<DashboardPage />} />
-          <Route path={ERoutes.PROFILE} element={<ProfilePage />} />
+        {/* rotas privadas */}
+        <Route element={<PrivateRoute />}>
+          <Route element={<AppLayout />}>
+            <Route path={ERoutes.DASHBOARD} element={<DashboardPage />} />
+            <Route path={ERoutes.PROFILE} element={<ProfilePage />} />
+          </Route>
         </Route>
       </Routes>
     </Router>
