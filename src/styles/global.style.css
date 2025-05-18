@@ -60,6 +60,9 @@ body {
   /* Fields */
   --md-outlined-text-field-container-shape: 0.5rem;
 
+  /* List */
+  --md-list-container-color: var(--md-sys-color-surface-variant);
+
 }
 md-outlined-text-field {
   width: 100%;
@@ -67,4 +70,28 @@ md-outlined-text-field {
 
 .w-100 {
   width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-scrollbar);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6fa8f9;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-color-scrollbar) transparent;
 }

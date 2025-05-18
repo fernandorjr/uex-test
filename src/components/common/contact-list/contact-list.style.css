@@ -1,0 +1,26 @@
+md-outlined-text-field {
+  margin-bottom: 1rem;
+  --md-outlined-text-field-container-shape: 8px;
+}
+
+.contact-list-container {
+  padding-top: 1rem;
+}
+
+.contact-list-item {
+  cursor: pointer;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+}
+
+.contact-list-item:hover {
+  background-color: var(--md-sys-color-surface-variant);
+  transition: background 0.2s;
+}
+
+.message-text {
+  padding: 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9rem;
+  text-align: center;
+}
