@@ -1,6 +1,8 @@
+import { RegisterView } from "@/components/views"
+
 const RegisterPage = () => {
   return (
-    <div>RegisterView</div>
+    <RegisterView />
   )
 }
 
