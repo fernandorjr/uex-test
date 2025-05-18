@@ -1,6 +1,6 @@
 import type { TErrorForm } from "@/types"
 
-export interface IRegisterCredentials {
+export interface IUserRegisterPayload {
   firstName: string
   lastName: string
   email: string
@@ -8,4 +8,4 @@ export interface IRegisterCredentials {
   confirmPassword: string
 }
 
-export type TErrorRegisterForm = TErrorForm<IRegisterCredentials>
+export type TErrorRegisterForm = TErrorForm<IUserRegisterPayload>
