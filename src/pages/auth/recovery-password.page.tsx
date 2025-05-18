@@ -1,6 +1,8 @@
+import { RecoveryPasswordView } from "@/components/views"
+
 const RecoveryPasswordPage = () => {
   return (
-    <div>RecoveryPasswordView</div>
+    <RecoveryPasswordView />
   )
 }
 
