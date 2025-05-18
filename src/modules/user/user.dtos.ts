@@ -9,6 +9,6 @@ export interface IResullLoginDto {
 
 export interface IRecoveryPasswordDto {
   email: string
-  password: string
+  newPassword: string
   confirmPassword: string
 }

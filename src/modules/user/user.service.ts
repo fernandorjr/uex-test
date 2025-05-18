@@ -18,7 +18,7 @@ class UserService {
 
     if (!user) throw new Error('Credenciais inválidas')
 
-    if (user.password !== btoa(payload.password)) throw new Error('Credenciais inválidas')
+    if (payload.password !== atob(user.password)) throw new Error('Credenciais inválidas')
 
     const randomForToken = Math.random().toString(36).substring(2, 15)
 
@@ -33,7 +33,10 @@ class UserService {
     const userAlreadyExists = await this._repository.getOne({ email: payload.email })
     if (userAlreadyExists) throw new Error('Usuário já cadastrado')
 
-    await this._repository.save(payload)
+    await this._repository.save({
+      ...payload,
+      password: btoa(payload.password)
+    })
   }
 
   async recoverPassword(payload: IRecoveryPasswordDto): Promise<void> {
@@ -41,11 +44,11 @@ class UserService {
 
     if (!user) throw new Error('Usuário não encontrado')
 
-    if (payload.password === btoa(user.password)) throw new Error('Senha igual a anterior')
+    if (payload.newPassword === atob(user.password)) throw new Error('Senha igual a anterior')
 
-    if (payload.password !== payload.confirmPassword) throw new Error('As senhas não conferem')
+    if (payload.newPassword !== payload.confirmPassword) throw new Error('As senhas não conferem')
 
-    this._repository.update(user.id, { password: btoa(payload.password) })
+      this._repository.update(user.id, { password: btoa(payload.newPassword) })
   }
 
   async updateProfile(id: string, payload: Partial<IUser>): Promise<void> {

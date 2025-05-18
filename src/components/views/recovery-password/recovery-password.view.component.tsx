@@ -20,12 +20,12 @@ const RecoveryPasswordView = () => {
   const [credentials, setCredentials] = useState<IRecoveryPasswordCredentials>({
     email: '',
     newPassword: '',
-    confirmNewPassword: ''
+    confirmPassword: ''
   })
   const [errors, setErrors] = useState<TErrorRecoveryPasswordForm>({
     email: '',
     newPassword: '',
-    confirmNewPassword: ''
+    confirmPassword: ''
   })
   const [formIsValid, setFormIsValid] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -55,7 +55,7 @@ const RecoveryPasswordView = () => {
       message = validationService.validate('password', value, true) || ''
     }
 
-    if (name === 'confirmNewPassword') {
+    if (name === 'confirmPassword') {
       message = comparePasswords(credentials.newPassword, value)
     }
 
@@ -121,13 +121,13 @@ const RecoveryPasswordView = () => {
           </md-outlined-text-field>
 
           <md-outlined-text-field
-            name="confirmNewPassword"
+            name="confirmPassword"
             label="Confirmar Nova Senha"
             type="password"
-            value={credentials.confirmNewPassword}
+            value={credentials.confirmPassword}
             onInput={handleChange}
-            error={!!errors.confirmNewPassword}
-            error-text={errors.confirmNewPassword}
+            error={!!errors.confirmPassword}
+            error-text={errors.confirmPassword}
             disabled={loading}
             required
             autocomplete="off"

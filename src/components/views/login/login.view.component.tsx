@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react'
 
-import { useNavigate } from '@/hooks'
+import { useNavigate, useStorage } from '@/hooks'
 import { ERoutes } from '@/tokens/routes'
 import { validationService } from '@/modules/validation'
 
@@ -9,15 +9,23 @@ import { AuthFormCard } from '@/components/common'
 
 import './login.view.style.css'
 import { ICredentials } from './login.view.interface'
+import useNotify from '@/hooks/notify/notify.hook'
+import { ENotifyType } from '@/hooks/notify/notify.interface'
+import { userService } from '@/modules/user'
+import { EAuthTokens } from '@/tokens/auth'
 
 const LoginView = () => {
   const { navigate } = useNavigate()
+  const { setStorage } = useStorage()
+  const notify = useNotify()
 
   const [credentials, setCredentials] = useState<ICredentials>({ email: '', password: '' })
   const [errors, setErrors] = useState<TErrorCredentialsForm>({ email: '', password: '' })
   const [formIsValid, setFormIsValid] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const handleNavigate = (route: ERoutes) => {
+    if (loading) return
     navigate(route)
   }
 
@@ -34,17 +42,26 @@ const LoginView = () => {
     }
 
     if (name === 'password') {
-      const validationPassword = !value.length ? 'Campo obrigatório' : '' ;
+      const validationPassword = !value.length ? 'Campo obrigatório' : ''
       setErrors(prev => ({ ...prev, [name]: validationPassword }))
     }
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (!formIsValid) return
 
-    console.log('submit', credentials)
+    setLoading(true)
+
+    try {
+      const data = await userService.login(credentials)
+      setStorage(EAuthTokens.TOKEN, data.token)
+    } catch (error: TServiceError) {
+      notify(ENotifyType.ERROR, error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -65,6 +82,7 @@ const LoginView = () => {
             onInput={handleChange}
             error={!!errors.email}
             error-text={errors.email}
+            disabled={loading}
             required
             autocomplete="off"
           >
@@ -79,6 +97,7 @@ const LoginView = () => {
             error-text={errors.password}
             value={credentials.password}
             onInput={handleChange}
+            disabled={loading}
             required
             autocomplete="off"
           >
@@ -87,8 +106,8 @@ const LoginView = () => {
         </div>
 
         <div className="w-100">
-          <md-filled-button className="w-100" type="submit" disabled={!formIsValid}>
-            Entrar
+          <md-filled-button className="w-100" type="submit" disabled={!formIsValid || loading}>
+            {loading ? <md-icon>sync</md-icon> : 'Entrar'}
           </md-filled-button>
         </div>
 

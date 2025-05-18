@@ -67,7 +67,7 @@ class LocalStorageAdapter<T> implements ILocalStorageAdapter<T> {
       ...item,
       id: uuidv4(),
       createAt: new Date(),
-      updateAt: new Date()
+      updatedAt: new Date()
     }
   }
 
@@ -85,18 +85,13 @@ class LocalStorageAdapter<T> implements ILocalStorageAdapter<T> {
 
   async update(id: string, updatedItem: Partial<TBaseEntityAdapter<T>>): Promise<void> {
     await sleep()
+    const data = await this.getAll()
 
-    const data = await this.getOne({ id } as Partial<TBaseEntityAdapter<T>>)
-
-    if (!data) throw new Error('Não foi possível encontrar esse ID.')
-
-    const updatedData = {
-      ...data,
-      ...updatedItem,
-      updateAt: new Date()
-    }
-
-    await this.save(updatedData)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const updatedData = data.map((item: any) =>
+      item.id === id ? { ...item, ...updatedItem, updatedAt: new Date() } : item
+    )
+    localStorage.setItem(this._storageKey, JSON.stringify(updatedData))
   }
 
   async delete(id: string): Promise<void> {
@@ -108,6 +103,17 @@ class LocalStorageAdapter<T> implements ILocalStorageAdapter<T> {
     const updateData = data.filter((item: any) => item.id !== id)
 
     localStorage.setItem(this._storageKey, JSON.stringify(updateData))
+  }
+
+  async deleteMany(query: Partial<T>): Promise<void> {
+    await sleep()
+    const data = await this.getAll()
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const updatedData = data.filter((item: any) =>
+      Object.entries(query).every(([key, value]) => item[key] !== value)
+    )
+    localStorage.setItem(this._storageKey, JSON.stringify(updatedData))
   }
 }
 

@@ -8,7 +8,7 @@ const useStorage = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setStorage = (key: string, value: any, opts: IStorageParams = defaultParams) => {
     if (opts.persist) {
-      localStorage.set(key, JSON.stringify(value))
+      localStorage.setItem(key, JSON.stringify(value))
     } else {
       sessionStorage.setItem(key, JSON.stringify(value))
     }

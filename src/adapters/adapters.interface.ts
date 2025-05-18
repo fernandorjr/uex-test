@@ -6,5 +6,5 @@ export interface IGetParams {
 export type TBaseEntityAdapter<T> = {
   id: string;
   createAt: Date;
-  updateAt: Date;
+  updatedAt: Date;
 } & T;
