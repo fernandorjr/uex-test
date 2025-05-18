@@ -9,9 +9,14 @@ import { AuthFormCard } from '@/components/common'
 
 import './recovery-password.view.style.css'
 import type { IRecoveryPasswordCredentials, TErrorRecoveryPasswordForm } from './recovery-password.view.interface'
+import useNotify from '@/hooks/notify/notify.hook'
+import { userService } from '@/modules/user'
+import { ENotifyType } from '@/hooks/notify/notify.interface'
 
 const RecoveryPasswordView = () => {
   const { navigate } = useNavigate()
+  const notify = useNotify()
+
   const [credentials, setCredentials] = useState<IRecoveryPasswordCredentials>({
     email: '',
     newPassword: '',
@@ -23,11 +28,13 @@ const RecoveryPasswordView = () => {
     confirmNewPassword: ''
   })
   const [formIsValid, setFormIsValid] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const comparePasswords = (pwd: string, confirm: string): string =>
-    !pwd ? 'Campo obrigatório' : pwd !== confirm ? 'Senhas não conferem' : ''
+  const comparePasswords = (pwd: string, confirm: string): string => (!pwd ? 'Campo obrigatório' : pwd !== confirm ? 'Senhas não conferem' : '')
 
   const handleNavigateToLogin = () => {
+    if (loading) return
+
     navigate(ERoutes.LOGIN)
   }
 
@@ -61,10 +68,23 @@ const RecoveryPasswordView = () => {
     setFormIsValid(!hasEmptyRequiredFields && !hasValidationErrors)
   }, [credentials, errors])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!formIsValid) return
-    console.log('submit', credentials)
+
+    setLoading(true)
+
+    try {
+      await userService.recoverPassword(credentials)
+
+      notify(ENotifyType.SUCCESS,'Senha alterada com sucesso!')
+
+      navigate(ERoutes.LOGIN)
+    } catch (error: TServiceError) {
+      notify(ENotifyType.ERROR, error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -78,6 +98,7 @@ const RecoveryPasswordView = () => {
             onInput={handleChange}
             error={!!errors.email}
             error-text={errors.email}
+            disabled={loading}
             required
             autocomplete="off"
           >
@@ -92,6 +113,7 @@ const RecoveryPasswordView = () => {
             onInput={handleChange}
             error={!!errors.newPassword}
             error-text={errors.newPassword}
+            disabled={loading}
             required
             autocomplete="off"
           >
@@ -106,6 +128,7 @@ const RecoveryPasswordView = () => {
             onInput={handleChange}
             error={!!errors.confirmNewPassword}
             error-text={errors.confirmNewPassword}
+            disabled={loading}
             required
             autocomplete="off"
           >
@@ -114,8 +137,8 @@ const RecoveryPasswordView = () => {
         </div>
 
         <div className="recovery-password-form-btn-login w-100">
-          <md-filled-button type="submit" disabled={!formIsValid}>
-            Recuperar Senha
+          <md-filled-button type="submit" disabled={!formIsValid || loading}>
+            {loading ? <md-icon>sync</md-icon> : 'Recuperar Senha'}
           </md-filled-button>
 
           <span className="recovery-password-form-btn-back" onClick={handleNavigateToLogin}>
