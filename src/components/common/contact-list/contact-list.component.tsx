@@ -255,7 +255,7 @@ export default function ContactList({ onSelect }: Props) {
 
       <md-list className="contact-list">
         {contacts.map((c, index) => (
-          <>
+          <div key={c.id}>
             <md-list-item key={c.id} type="button" class="contact-list-item" onclick={() => onSelect(c)}>
               <md-icon slot="start">account_circle</md-icon>
 
@@ -267,7 +267,7 @@ export default function ContactList({ onSelect }: Props) {
             </md-list-item>
 
             {index !== contacts.length - 1 && <md-divider></md-divider>}
-          </>
+          </div>
         ))}
 
         {contacts.length === 0 && <div className="message-text">Nenhum contato encontrado.</div>}

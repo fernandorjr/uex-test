@@ -2,3 +2,4 @@ export { default as AuthFormCard } from './auth-form-card/auth-form-card.compone
 export { default as ContactList } from './contact-list/contact-list.component';
 export { default as ContactDetails } from './contact-details/contact-details.component';
 export { default as Map } from './map/map.component';
+export { default as Header } from './header/header.component';
