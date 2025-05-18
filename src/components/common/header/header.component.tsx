@@ -7,7 +7,7 @@ import { ERoutes } from '@/tokens/routes';
 export default function Header() {
   const { navigate } = useNavigate();
 
-  const menuRef = useRef<any>(null);
+  const menuRef = useRef<HTMLButtonElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const openMenu = () => {
@@ -36,7 +36,7 @@ export default function Header() {
         ref={menuRef}
         corner="BOTTOM_START"
       >
-        <md-menu-item>
+        <md-menu-item onClick={() => navigate(ERoutes.PROFILE)}>
           <md-icon slot="start">edit</md-icon>
           Editar perfil
         </md-menu-item>

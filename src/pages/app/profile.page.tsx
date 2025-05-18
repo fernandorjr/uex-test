@@ -1,8 +1,7 @@
+import { ProfileView } from '@/components/views'
 
 const ProfilePage = () => {
-  return (
-    <div>ProfilePage</div>
-  )
+  return <ProfileView />
 }
 
 export default ProfilePage

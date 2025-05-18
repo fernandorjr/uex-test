@@ -1,0 +1,52 @@
+.profile-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.profile-wrapper {
+  width: 800px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.profile-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--md-sys-color-primary);
+}
+
+.profile-header md-icon {
+  color: var(--md-sys-color-on-primary);
+}
+
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.profile-form {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.profile-form-btn-back {
+  display: flex;
+  align-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
