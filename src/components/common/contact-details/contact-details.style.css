@@ -72,3 +72,16 @@
   font-weight: 500;
   color: var(--md-sys-color-on-surface);
 }
+
+.map-section {
+  margin-top: 8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.map-section h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--md-sys-color-primary);
+}

@@ -1,9 +1,10 @@
 // @ts-nocheck
 import './contact-details.style.css'
 import { useEffect, useState } from 'react'
-import type { IContactDetailsProps } from './contact-details.interface'
 import { validationService } from '@/modules/validation'
+import { Map } from '@/components/common'
 import type { Contact } from '../contact-list/contact-list.component'
+import type { IContactDetailsProps } from './contact-details.interface'
 
 const initialForm = (contact: Contact) => ({
   cpf: contact?.cpf || '',
@@ -25,14 +26,12 @@ const ContactDetails = ({ contact }: IContactDetailsProps) => {
   const [errors, setErrors] = useState(initialErrors)
   const [formIsValid, setFormIsValid] = useState(false)
 
-  // Sempre que o contato mudar, reseta edição e formulário
   useEffect(() => {
     setIsEditing(false)
     setForm(initialForm(contact))
     setErrors(initialErrors)
   }, [contact])
 
-  // Validação dos campos
   const handleErrors = (name: keyof typeof form, value: string) => {
     let message = ''
     if (name === 'cpf') {
@@ -50,26 +49,22 @@ const ContactDetails = ({ contact }: IContactDetailsProps) => {
     setErrors(prev => ({ ...prev, [name]: message }))
   }
 
-  // Atualiza campo e valida
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
     handleErrors(name as keyof typeof form, value)
   }
 
-  // Validação geral do formulário
   useEffect(() => {
     const hasEmptyRequiredFields = Object.values(form).some(v => !v)
     const hasValidationErrors = Object.values(errors).some(Boolean)
     setFormIsValid(!hasEmptyRequiredFields && !hasValidationErrors)
   }, [form, errors])
 
-  // Salvar alterações (mock)
   const handleSave = () => {
     if (!formIsValid) return
-    // Aqui você pode chamar uma função para salvar os dados
+
     setIsEditing(false)
-    // Exemplo: console.log('Salvar', form)
   }
 
   if (!contact) {
@@ -92,21 +87,11 @@ const ContactDetails = ({ contact }: IContactDetailsProps) => {
         <h2>{contact.nome}</h2>
         <div style={{ display: 'flex', gap: 8 }}>
           {isEditing && (
-            <md-icon-button
-              aria-label="Salvar"
-              onClick={handleSave}
-              disabled={!formIsValid}
-              style={{ marginRight: 4 }}
-            >
+            <md-icon-button aria-label="Salvar" onClick={handleSave} disabled={!formIsValid} style={{ marginRight: 4 }}>
               <md-icon>save</md-icon>
             </md-icon-button>
           )}
-          <md-icon-button
-            aria-label={isEditing ? 'Fechar' : 'Editar'}
-            onClick={() => setIsEditing(prev => !prev)}
-            toggle
-            selected={isEditing}
-          >
+          <md-icon-button aria-label={isEditing ? 'Fechar' : 'Editar'} onClick={() => setIsEditing(prev => !prev)} toggle selected={isEditing}>
             <md-icon>{isEditing ? 'close' : 'edit'}</md-icon>
           </md-icon-button>
         </div>
@@ -181,6 +166,11 @@ const ContactDetails = ({ contact }: IContactDetailsProps) => {
             </div>
           </>
         )}
+      </div>
+
+      <div className="map-section">
+        <h3>Localização</h3>
+        <Map lat={contact.latitude} lng={contact.longitude} />
       </div>
     </md-elevated-card>
   )
