@@ -1,9 +1,10 @@
 import type { RepositoryAdapter } from '@/adapters/repository'
 import type { IUser } from './user.interface'
 import type { ILoginCredentialsDto, IRecoveryPasswordDto, IResullLoginDto } from './user.dtos'
+import type { IContact } from '../contact/contact.interface'
 
 class UserService {
-  constructor(private readonly _repository: RepositoryAdapter<IUser>) {}
+  constructor(private readonly _repository: RepositoryAdapter<IUser>, private readonly _contactRepository: RepositoryAdapter<IContact>) {}
 
   async getProfile(id: string): Promise<IUser> {
     const user = await this._repository.getOne({ id })
@@ -79,7 +80,7 @@ class UserService {
     const user = await this._repository.getOne({ id })
     if (!user) throw new Error('Usuário não encontrado')
 
-    // TODO: Implementar delete de contatos
+     await this._contactRepository.deleteMany({ userId: id })
 
     await this._repository.delete(id)
   }

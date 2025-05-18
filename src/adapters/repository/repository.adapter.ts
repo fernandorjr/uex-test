@@ -3,7 +3,7 @@ import type { LocalStorageAdapter } from '../local-storage'
 
 class Repository<T> {
   constructor(private _storage: LocalStorageAdapter<T>) {}
-  
+
   async getAll(query?: Partial<T>, params?: IGetParams): Promise<T[]> {
     return await this._storage.getAll(query, params)
   }
@@ -12,8 +12,8 @@ class Repository<T> {
     return await this._storage.getOne(query, params)
   }
 
-  async save(item: T): Promise<void> {
-    return await this._storage.save(item)
+  async save(item: Partial<T>): Promise<void> {
+    return await this._storage.save(item as T)
   }
 
   async update(id: string, updatedItem: Partial<TBaseEntityAdapter<T>>): Promise<void> {
@@ -24,6 +24,9 @@ class Repository<T> {
     await this._storage.delete(id)
   }
 
+  async deleteMany(query: Partial<T>): Promise<void> {
+    await this._storage.deleteMany(query)
+  }
 }
 
 export default Repository
