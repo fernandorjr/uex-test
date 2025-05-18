@@ -1,4 +1,4 @@
-import { ContactList } from '@/components/common'
+import { ContactDetails, ContactList } from '@/components/common'
 import './dashboard.view.style.css'
 import { useState } from 'react'
 
@@ -26,7 +26,7 @@ export default function DashboardView() {
       </section>
 
       <section className="details-panel">
-        <h2>Detalhes do Contato {selectedContact?.nome}</h2>
+        <ContactDetails contact={selectedContact} />
       </section>
     </div>
   )

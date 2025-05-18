@@ -1,0 +1,74 @@
+.empty-contact-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.no-selection-card {
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+.no-selection-content md-icon {
+  width: auto;
+  height: auto;
+  font-size: 48px;
+  margin-bottom: 0.8rem;
+}
+
+.no-selection-content p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+}
+
+.no-selection-content span {
+  font-size: 0.95rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.contact-edit-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contact-edit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contact-edit-header h2 {
+  margin: 0;
+  font-size: 1.7rem;
+  color: var(--md-sys-color-primary);
+}
+
+.contact-edit-fields {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.info-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.info-block label {
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.info-block span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
