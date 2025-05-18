@@ -2,10 +2,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ERoutes } from '../tokens/routes';
 import { AuthLayout, AppLayout } from '@/components/layout';
 
-import { PublicRoute } from './public-route';
-import { PrivateRoute } from './private-route';
+
 import { LoginPage, RegisterPage, RecoveryPasswordPage } from '@/pages/auth';
 import { DashboardPage, ProfilePage } from '@/pages/app';
+import PublicRoute from './public-route';
+import PrivateRoute from './private-route';
 
 const RouterApp = () => {
   return (

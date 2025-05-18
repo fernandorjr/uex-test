@@ -1,0 +1,19 @@
+.app-loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+md-circular-progress {
+  --md-circular-progress-active-indicator-color: var(--md-sys-color-primary);
+  --md-circular-progress-track-color: rgba(255, 255, 255, 0.1);
+  width: 64px;
+  height: 64px;
+}

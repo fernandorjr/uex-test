@@ -1,13 +1,12 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import { ERoutes } from '@/tokens/routes';
+import { AppLoader } from '@/components/common';
 
-export const PrivateRoute = () => {
+const PrivateRoute = () => {
   const { user, checking } = useAuth();
 
-  if (checking) {
-    return null;
-  }
+  if (checking) return <AppLoader />;
 
   if (!user) {
     return <Navigate to={ERoutes.LOGIN} replace />;
@@ -15,3 +14,5 @@ export const PrivateRoute = () => {
 
   return <Outlet />;
 };
+
+export default PrivateRoute;

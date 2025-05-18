@@ -5,3 +5,4 @@ export { default as Map } from './map/map.component';
 export { default as Header } from './header/header.component';
 export { default as ModalAddContact } from './modal-add-contact/modal-add-contact.component';
 export { default as ModalContactDetails } from './modal-contact-details/modal-contact-details.component';
+export { default as AppLoader } from "./app-loader/app-loader"
