@@ -1,7 +1,8 @@
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { ERoutes } from '../tokens/routes'
+import { AppLayout, AuthLayout } from '@/components/layout'
+import { DashboardPage } from '@/pages/app'
 import { LoginPage, RecoveryPasswordPage, RegisterPage } from '@/pages/auth'
-import { AuthLayout } from '@/components/layout'
 
 
 const RouterApp = () => {
@@ -14,6 +15,10 @@ const RouterApp = () => {
           <Route path={ERoutes.LOGIN} element={<LoginPage />} />
           <Route path={ERoutes.REGISTER} element={<RegisterPage />} />
           <Route path={ERoutes.RECOVERY_PASSWORD} element={<RecoveryPasswordPage />} />
+        </Route>
+
+        <Route element={<AppLayout />}>
+          <Route path={ERoutes.DASHBOARD} element={<DashboardPage />} />
         </Route>
       </Routes>
     </Router>
