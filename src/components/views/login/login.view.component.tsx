@@ -52,7 +52,7 @@ const LoginView = () => {
 
   return (
     <div className="login-card">
-      <form className="login-form">
+      <form className="w-100" onSubmit={handleSubmit}>
         <span className="login-form-title">Bem Vindo</span>
         <span className="login-form-subtitle">Dragon's Contacts</span>
 
@@ -85,8 +85,8 @@ const LoginView = () => {
           </md-outlined-text-field>
         </div>
 
-        <div className="login-form-btn-login">
-          <md-filled-button onClick={handleSubmit} disabled={!formIsValid}>
+        <div className="w-100">
+          <md-filled-button className="w-100" type="submit" disabled={!formIsValid}>
             Entrar
           </md-filled-button>
         </div>

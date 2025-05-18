@@ -1,5 +1,5 @@
 .login-card {
-  width: 390px;
+  width: 550px;
   background-color: var(--md-sys-color-surface);
   overflow: hidden;
   padding: 80px 30px 20px;
@@ -11,10 +11,6 @@
   gap: 1.5rem;
 
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-.login-form {
-  width: 100%;
 }
 
 .login-form-title {
@@ -39,14 +35,6 @@
   gap: 2rem;
 }
 
-.login-form-btn-login {
-  width: 100%;
-}
-
-md-filled-button {
-  width: 100%;
-}
-
 .login-form-btn-group {
   display: flex;
   width: 100%;
@@ -58,4 +46,17 @@ md-filled-button {
 .login-form-btn-group span {
   font-size: 0.9rem;
   cursor: pointer;
+}
+
+@media (max-width: 576px) {
+  .login-card {
+    width: 80%;
+    padding: 40px 20px 20px;
+  }
+
+  .login-form-btn-group {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
 }
