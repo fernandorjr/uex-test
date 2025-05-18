@@ -4,4 +4,5 @@ export enum ERoutes {
   RECOVERY_PASSWORD = '/recuperar-senha',
 
   DASHBOARD = '/dashboard',
+  PROFILE = '/perfil',
 }
