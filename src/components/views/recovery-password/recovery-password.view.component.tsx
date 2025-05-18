@@ -1,10 +1,14 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react'
-import type { IRecoveryPasswordCredentials, TErrorRecoveryPasswordForm } from './recovery-password.view.interface'
-import { validationService } from '@/modules/validation'
-import './recovery-password.view.style.css'
+
 import { useNavigate } from '@/hooks'
 import { ERoutes } from '@/tokens/routes'
+import { validationService } from '@/modules/validation'
+
+import { AuthFormCard } from '@/components/common'
+
+import './recovery-password.view.style.css'
+import type { IRecoveryPasswordCredentials, TErrorRecoveryPasswordForm } from './recovery-password.view.interface'
 
 const RecoveryPasswordView = () => {
   const { navigate } = useNavigate()
@@ -64,10 +68,8 @@ const RecoveryPasswordView = () => {
   }
 
   return (
-    <div className="recovery-password-card">
+    <AuthFormCard title="Recuperar Senha">
       <form className="w-100" onSubmit={handleSubmit}>
-        <span className="recovery-password-form-title">Recuperar Senha</span>
-
         <div className="recovery-password-form-inputs-wrapper">
           <md-outlined-text-field
             name="email"
@@ -122,7 +124,7 @@ const RecoveryPasswordView = () => {
           </span>
         </div>
       </form>
-    </div>
+    </AuthFormCard>
   )
 }
 

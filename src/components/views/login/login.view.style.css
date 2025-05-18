@@ -1,32 +1,3 @@
-.login-card {
-  width: 550px;
-  background-color: var(--md-sys-color-surface);
-  overflow: hidden;
-  padding: 80px 30px 20px;
-  border-radius: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-.login-form-title {
-  display: block;
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.login-form-subtitle {
-  display: block;
-  font-size: 1rem;
-  color: #666666;
-  text-align: center;
-}
-
 .login-form-inputs-wrapper {
   width: 100%;
   display: flex;

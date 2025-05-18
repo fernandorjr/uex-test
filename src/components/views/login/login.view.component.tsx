@@ -1,10 +1,14 @@
 // @ts-nocheck
-import './login.view.style.css'
-import { ERoutes } from '@/tokens/routes'
+import { useEffect, useState } from 'react'
+
 import { useNavigate } from '@/hooks'
-import React, { useEffect, useState } from 'react'
-import { ICredentials } from './login.view.interface'
+import { ERoutes } from '@/tokens/routes'
 import { validationService } from '@/modules/validation'
+
+import { AuthFormCard } from '@/components/common'
+
+import './login.view.style.css'
+import { ICredentials } from './login.view.interface'
 
 const LoginView = () => {
   const { navigate } = useNavigate()
@@ -20,10 +24,10 @@ const LoginView = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setCredentials(prev => ({ ...prev, [name]: value }))
-    handleErrors(name as keyof ICredentialsForm, value)
+    handleErrors(name as keyof ICredentials, value)
   }
 
-  const handleErrors = (name: keyof ICredentialsForm, value: string) => {
+  const handleErrors = (name: keyof ICredentials, value: string) => {
     if (name === 'email') {
       const message = validationService.validate('email', value, true)
       setErrors(prev => ({ ...prev, [name]: message || '' }))
@@ -51,11 +55,8 @@ const LoginView = () => {
   }, [credentials, errors])
 
   return (
-    <div className="login-card">
+    <AuthFormCard title="Bem Vindo" subtitle="Dragon's Contacts">
       <form className="w-100" onSubmit={handleSubmit}>
-        <span className="login-form-title">Bem Vindo</span>
-        <span className="login-form-subtitle">Dragon's Contacts</span>
-
         <div className="login-form-inputs-wrapper">
           <md-outlined-text-field
             name="email"
@@ -93,11 +94,10 @@ const LoginView = () => {
 
         <div className="login-form-btn-group">
           <span onClick={() => handleNavigate(ERoutes.RECOVERY_PASSWORD)}>Esqueci minha senha</span>
-
           <span onClick={() => handleNavigate(ERoutes.REGISTER)}>Registrar</span>
         </div>
       </form>
-    </div>
+    </AuthFormCard>
   )
 }
 
