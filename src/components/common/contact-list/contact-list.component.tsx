@@ -25,6 +25,7 @@ export default function ContactList({ onSelect, userId }: IContactListProps) {
       try {
         setLoading(true)
         const data = await contactService.getAllContacts({ userId })
+        console.log(data);
         setContacts(data)
         setError(null)
 

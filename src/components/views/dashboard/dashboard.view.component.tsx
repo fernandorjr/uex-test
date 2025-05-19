@@ -37,7 +37,7 @@ export default function DashboardView() {
 
       {!isMobile && (
         <section className="details-panel">
-          <ContactDetails contact={selectedContact} />
+          <ContactDetails contact={selectedContact} userId={user.id} />
         </section>
       )}
 
