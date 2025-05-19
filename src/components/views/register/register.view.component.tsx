@@ -88,7 +88,7 @@ const RegisterView = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      notify(ENotifyType.ERROR, error.message)
+      if (error.message) notify(ENotifyType.ERROR, error.message)
     } finally {
       setLoading(false)
     }

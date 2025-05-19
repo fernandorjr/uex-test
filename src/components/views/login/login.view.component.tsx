@@ -58,7 +58,7 @@ const LoginView = () => {
       const data = await userService.login(credentials)
       setStorage(EAuthTokens.TOKEN, data.token)
     } catch (error: TServiceError) {
-      notify(ENotifyType.ERROR, error.message)
+      if (error.message) notify(ENotifyType.ERROR, error.message)
     } finally {
       setLoading(false)
     }

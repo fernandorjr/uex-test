@@ -1,10 +1,13 @@
 import { ContactDetails, ContactList, ModalContactDetails } from '@/components/common'
 import './dashboard.view.style.css'
 import { useEffect, useState } from 'react'
-import type { Contact } from '@/components/common/contact-list/contact-list.component'
+import { useAuth } from '@/hooks'
+import type { IContact } from '@/modules/contact/contact.interface'
 
 export default function DashboardView() {
-  const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
+  const { user } = useAuth()
+
+  const [selectedContact, setSelectedContact] = useState<IContact | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 577)
 
@@ -14,7 +17,7 @@ export default function DashboardView() {
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
-  const handleSelectContact = (contact: Contact) => {
+  const handleSelectContact = (contact: IContact) => {
     setSelectedContact(contact)
     if (isMobile) {
       setIsDialogOpen(true)
@@ -29,7 +32,7 @@ export default function DashboardView() {
   return (
     <div className="dashboard-content">
       <section className="contacts-panel">
-        <ContactList onSelect={handleSelectContact} />
+        <ContactList userId={user.id} onSelect={handleSelectContact} />
       </section>
 
       {!isMobile && (

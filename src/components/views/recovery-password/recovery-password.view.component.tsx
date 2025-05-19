@@ -81,7 +81,7 @@ const RecoveryPasswordView = () => {
 
       navigate(ERoutes.LOGIN)
     } catch (error: TServiceError) {
-      notify(ENotifyType.ERROR, error.message)
+      if (error.message) notify(ENotifyType.ERROR, error.message)
     } finally {
       setLoading(false)
     }
