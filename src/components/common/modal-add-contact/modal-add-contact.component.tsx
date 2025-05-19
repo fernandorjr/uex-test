@@ -42,11 +42,11 @@ const AddContactDialog: FC<IModalAddContactProps> = ({ open, onClose }) => {
     city: '',
     state: ''
   })
-  
-  const handleClose = () => {
-    if(loading) return
 
-    onClose();
+  const handleClose = () => {
+    if (loading) return
+
+    onClose()
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -141,12 +141,12 @@ const AddContactDialog: FC<IModalAddContactProps> = ({ open, onClose }) => {
       setLoading(true)
       await contactService.register({
         ...form,
-        userId: user.id,
+        userId: user.id
       })
-      
+
       setLoading(false)
       handleClose()
-      await fetchContacts(user.id)
+      await fetchContacts({ userId: user.id })
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -365,7 +365,9 @@ const AddContactDialog: FC<IModalAddContactProps> = ({ open, onClose }) => {
       </div>
 
       <div slot="actions">
-        <md-text-button onClick={handleClose} disabled={loading}>Cancelar</md-text-button>
+        <md-text-button onClick={handleClose} disabled={loading}>
+          Cancelar
+        </md-text-button>
         <md-filled-button onClick={handleSubmit} disabled={!formIsValid || loading}>
           {loading ? <md-icon className="load-icon">sync</md-icon> : 'Salvar'}
         </md-filled-button>

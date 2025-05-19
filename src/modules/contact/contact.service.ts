@@ -4,7 +4,7 @@ import type { IUser } from '../user'
 import type { CreateContactDto } from './contact.dtos'
 import type { IGetParams } from '@/adapters/adapters.interface'
 
-const defaultParams: IGetParams = { orderBy: 'createdAt', order: 'asc' }
+const defaultParams: IGetParams = { orderBy: 'name', order: 'asc' }
 
 class ContactService {
   constructor(private readonly _repository: RepositoryAdapter<IContact>, private readonly _userRepository: RepositoryAdapter<IUser>) {}

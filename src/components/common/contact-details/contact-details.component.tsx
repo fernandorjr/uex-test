@@ -130,7 +130,7 @@ const ContactDetails = ({ contact, userId }: IContactDetailsProps) => {
     try {
       setLoading(true)
       await contactService.updateContact(userId, contact.id, form as CreateContactDto)
-      await fetchContacts(userId)
+      await fetchContacts({ userId: userId })
       setLoading(false)
       setIsEditing(false)
 
