@@ -3,6 +3,12 @@ md-outlined-text-field {
   --md-outlined-text-field-container-shape: 8px;
 }
 
+.contact-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .contact-list-container {
   display: flex;
   flex-direction: column;

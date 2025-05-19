@@ -13,19 +13,25 @@ class LocalStorageAdapter<T> implements ILocalStorageAdapter<T> {
 
   async getAll(query?: Partial<T>, params?: IGetParams): Promise<T[]> {
     await sleep()
-
+    
     const dataRaw = localStorage.getItem(this._storageKey)
-
     if (!dataRaw) return []
 
     const data = JSON.parse(dataRaw) as T[]
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const filteredData = data.filter((item: any) => Object.entries(query || {}).every(([key, value]) => item[key] === value))
+    const filteredData = data.filter((item: any) =>
+      Object.entries(query || {}).every(([key, value]) => {
+        const itemValue = item[key]
+        if (typeof value === 'string' && typeof itemValue === 'string') {
+          return itemValue.toLowerCase().includes(value.toLowerCase())
+        }
+        return itemValue === value
+      })
+    )
 
     if (!params) return filteredData
 
-    const sortedData = data.sort((a: T, b: T) => {
+    const sorted = [...filteredData].sort((a: T, b: T) => {
       const aValue = a[params.orderBy as keyof T]
       const bValue = b[params.orderBy as keyof T]
 
@@ -36,7 +42,7 @@ class LocalStorageAdapter<T> implements ILocalStorageAdapter<T> {
       }
     })
 
-    return sortedData
+    return sorted
   }
 
   async getOne(query: Partial<TBaseEntityAdapter<T>>, params?: IGetParams): Promise<T | undefined> {
@@ -88,9 +94,7 @@ class LocalStorageAdapter<T> implements ILocalStorageAdapter<T> {
     const data = await this.getAll()
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const updatedData = data.map((item: any) =>
-      item.id === id ? { ...item, ...updatedItem, updatedAt: new Date() } : item
-    )
+    const updatedData = data.map((item: any) => (item.id === id ? { ...item, ...updatedItem, updatedAt: new Date() } : item))
     localStorage.setItem(this._storageKey, JSON.stringify(updatedData))
   }
 
@@ -108,11 +112,9 @@ class LocalStorageAdapter<T> implements ILocalStorageAdapter<T> {
   async deleteMany(query: Partial<T>): Promise<void> {
     await sleep()
     const data = await this.getAll()
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const updatedData = data.filter((item: any) =>
-      Object.entries(query).every(([key, value]) => item[key] !== value)
-    )
+    const updatedData = data.filter((item: any) => Object.entries(query).every(([key, value]) => item[key] !== value))
     localStorage.setItem(this._storageKey, JSON.stringify(updatedData))
   }
 }
