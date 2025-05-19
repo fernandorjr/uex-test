@@ -56,7 +56,7 @@ class UserService {
     const user = await this._repository.getOne({ id })
     if (!user) throw new Error('Usuário não encontrado')
 
-    if (payload.email) {
+    if (payload.email && payload.email !== user.email) {
       const userAlreadyExists = await this._repository.getOne({ email: payload.email })
       if (userAlreadyExists) throw new Error('Usuário com este email já cadastrado')
     }

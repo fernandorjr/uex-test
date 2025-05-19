@@ -1,21 +1,18 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ERoutes } from '../tokens/routes';
-import { AuthLayout, AppLayout } from '@/components/layout';
+import { AppLayout, AuthLayout } from '@/components/layout'
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { ERoutes } from '../tokens/routes'
 
-
-import { LoginPage, RegisterPage, RecoveryPasswordPage } from '@/pages/auth';
-import { DashboardPage, ProfilePage } from '@/pages/app';
-import PublicRoute from './public-route';
-import PrivateRoute from './private-route';
+import { DashboardPage, ProfilePage } from '@/pages/app'
+import { LoginPage, RecoveryPasswordPage, RegisterPage } from '@/pages/auth'
+import PrivateRoute from './private-route'
+import PublicRoute from './public-route'
 
 const RouterApp = () => {
   return (
     <Router>
       <Routes>
-        {/* default redirect */}
-        <Route path="*" element={<Navigate to={ERoutes.LOGIN} replace />} />
+        <Route path="*" element={<Navigate to={ERoutes.LOGIN} />} />
 
-        {/* rotas públicas */}
         <Route element={<PublicRoute />}>
           <Route element={<AuthLayout />}>
             <Route path={ERoutes.LOGIN} element={<LoginPage />} />
@@ -24,7 +21,6 @@ const RouterApp = () => {
           </Route>
         </Route>
 
-        {/* rotas privadas */}
         <Route element={<PrivateRoute />}>
           <Route element={<AppLayout />}>
             <Route path={ERoutes.DASHBOARD} element={<DashboardPage />} />

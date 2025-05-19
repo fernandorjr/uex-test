@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react'
 
-import { useNavigate, useStorage } from '@/hooks'
+import { useAuth, useNavigate, useStorage } from '@/hooks'
 import { ERoutes } from '@/tokens/routes'
 import { validationService } from '@/modules/validation'
 
@@ -11,12 +11,10 @@ import './login.view.style.css'
 import { ICredentials } from './login.view.interface'
 import useNotify from '@/hooks/notify/notify.hook'
 import { ENotifyType } from '@/hooks/notify/notify.interface'
-import { userService } from '@/modules/user'
-import { EAuthTokens } from '@/tokens/auth'
 
 const LoginView = () => {
   const { navigate } = useNavigate()
-  const { setStorage } = useStorage()
+  const { login } = useAuth();
   const notify = useNotify()
 
   const [credentials, setCredentials] = useState<ICredentials>({ email: '', password: '' })
@@ -55,10 +53,9 @@ const LoginView = () => {
     setLoading(true)
 
     try {
-      const data = await userService.login(credentials)
-      setStorage(EAuthTokens.TOKEN, data.token)
+      await login(credentials)
     } catch (error: TServiceError) {
-      if (error.message) notify(ENotifyType.ERROR, error.message)
+      notify(ENotifyType.ERROR, error.message)
     } finally {
       setLoading(false)
     }

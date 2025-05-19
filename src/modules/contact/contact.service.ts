@@ -10,7 +10,7 @@ class ContactService {
   constructor(private readonly _repository: RepositoryAdapter<IContact>, private readonly _userRepository: RepositoryAdapter<IUser>) {}
 
   async register(payload: CreateContactDto): Promise<void> {
-    const contactAlreadyExists = await this._repository.getOne({ cpf: payload.cpf })
+    const contactAlreadyExists = await this._repository.getOne({ cpf: payload.cpf, userId: payload.userId })
 
     if (contactAlreadyExists) throw new Error('Contato com esse CPF já cadastrado')
 
@@ -74,7 +74,7 @@ class ContactService {
     const contact = await this._repository.getOne({ userId, id })
     if (!contact) throw new Error('Contato não encontrado')
 
-    if (payload.cpf) {
+    if (payload.cpf && payload.cpf !== contact.cpf) {
       const contactWithSameCpf = await this._repository.getOne({ cpf: payload.cpf })
       if (contactWithSameCpf && contactWithSameCpf.id !== id) throw new Error('CPF já cadastrado')
     }

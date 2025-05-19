@@ -7,9 +7,13 @@ import useNotify from '@/hooks/notify/notify.hook'
 import { ENotifyType } from '@/hooks/notify/notify.interface'
 import { viaCepService } from '@/modules/via-cep'
 import './modal-add-contact.style.css'
+import useContacts from '@/hooks/contacts/contacts.hook'
+import { useAuth } from '@/hooks'
 
-const AddContactDialog: FC<IModalAddContactProps> = ({ open, onClose, userId }) => {
+const AddContactDialog: FC<IModalAddContactProps> = ({ open, onClose }) => {
+  const { user } = useAuth()
   const notify = useNotify()
+  const { fetchContacts } = useContacts()
   const dialogRef = useRef<HTMLDialogElement | null>(null)
 
   const [formIsValid, setFormIsValid] = useState<boolean>(false)
@@ -137,16 +141,20 @@ const AddContactDialog: FC<IModalAddContactProps> = ({ open, onClose, userId }) 
       setLoading(true)
       await contactService.register({
         ...form,
-        userId
+        userId: user.id,
       })
+      
       setLoading(false)
       handleClose()
+      await fetchContacts(user.id)
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error)
 
       if (error.message) notify(ENotifyType.ERROR, error.message)
+    } finally {
+      setLoading(false)
     }
   }
 

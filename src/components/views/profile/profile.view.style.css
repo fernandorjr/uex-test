@@ -50,3 +50,10 @@
   gap: 0.5rem;
   cursor: pointer;
 }
+
+.profile-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}

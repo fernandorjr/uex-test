@@ -1,21 +1,26 @@
+import type { IGetParams } from '@/adapters/adapters.interface'
+import { contactService } from '@/modules/contact'
+import { contactInitializedAtom, contactListAtom, contactLoadingAtom } from '@/state/contact'
 import { useAtom } from 'jotai'
 import { useCallback } from 'react'
-import { contactService } from '@/modules/contact'
 import useNotify from '../notify/notify.hook'
 import { ENotifyType } from '../notify/notify.interface'
-import { contactInitializedAtom, contactListAtom, contactLoadingAtom } from '@/state/contact'
+import type { IContact } from '@/modules/contact/contact.interface'
+import useAuth from '../auth/auth.hook'
 
 const useContacts = () => {
+  const { user } = useAuth()
   const [contacts, setContacts] = useAtom(contactListAtom)
   const [loading, setLoading] = useAtom(contactLoadingAtom)
   const [initialized, setInitialized] = useAtom(contactInitializedAtom)
 
   const notify = useNotify()
 
-  const fetchContacts = useCallback(async (userId: string) => {
+  const fetchContacts = useCallback(async (query: Partial<IContact>, params?: IGetParams) => {
+    query.userId = user.id
     try {
       setLoading(true)
-      const data = await contactService.getAllContacts({ userId })
+      const data = await contactService.getAllContacts(query, params)
       setContacts(data)
       
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

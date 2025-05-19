@@ -1,92 +1,127 @@
 // @ts-nocheck
-import { useEffect, useState } from 'react'
-import { validationService } from '@/modules/validation'
+import { useState, useEffect, useRef } from 'react'
 import './profile.view.style.css'
-import type { IProfileCredentials, TErrorProfileForm } from './profile.view.interface'
-import ValidationService from '@/modules/validation/validation.service'
-import { useNavigate } from '@/hooks'
+import type { IProfileForm, TErrorProfileForm } from './profile.view.interface'
+import { useAuth, useNavigate, useStorage } from '@/hooks'
 import { ERoutes } from '@/tokens/routes'
+import { validationService } from '@/modules/validation'
+import { userService } from '@/modules/user'
+import { EAuthTokens } from '@/tokens/auth'
+import useNotify from '@/hooks/notify/notify.hook'
+import { ENotifyType } from '@/hooks/notify/notify.interface'
 
-const ProfileView = () => {
-  const { navigate } = useNavigate();
-  const [credentials, setCredentials] = useState<IProfileCredentials>({
-    firstName: 'Fernando',
-    lastName: 'Maionese',
-    email: 'fernando@maionese.dev',
-    password: '123456',
-    confirmPassword: ''
+export default function ProfileView() {
+  const { user, setUser } = useAuth()
+  const { delStorage } = useStorage()
+  const { navigate } = useNavigate()
+  const notify = useNotify();
+
+  const [form, setForm] = useState<IProfileForm>({
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    email: user?.email || ''
   })
   const [errors, setErrors] = useState<TErrorProfileForm>({
     firstName: '',
     lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    email: ''
   })
   const [formIsValid, setFormIsValid] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const comparePasswords = (pwd: string, confirm: string): string => (!pwd ? 'Campo obrigatório' : pwd !== confirm ? 'Senhas não conferem' : '')
+  const dialogRef = useRef<HTMLDialogElement | null>(null)
+  const [delPassword, setDelPassword] = useState('')
+  const [delError, setDelError] = useState('')
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target
-    setCredentials(prev => ({ ...prev, [name]: value }))
-    handleErrors(name as keyof IProfileCredentials, value)
+    setForm(prev => ({ ...prev, [name]: value }))
+    handleErrors(name, value)
   }
 
-  const handleErrors = (name: keyof IProfileCredentials, value: string) => {
-    let message = ''
-
+  const handleErrors = (name: keyof IProfileForm, value: string) => {
+    let msg = ''
     if (name === 'firstName' || name === 'lastName') {
-      message = ValidationService.validate('name', value, true) || ''
+      msg = validationService.validate('name', value, true) || ''
     }
-
     if (name === 'email') {
-      message = validationService.validate('email', value, true) || ''
+      msg = validationService.validate('email', value, true) || ''
     }
-
-    if (name === 'password') {
-      message = validationService.validate('password', value, true) || ''
-    }
-
-    if (name === 'confirmPassword') {
-      message = comparePasswords(credentials.password, value)
-    }
-
-    setErrors(prev => ({ ...prev, [name]: message }))
+    setErrors(prev => ({ ...prev, [name]: msg }))
   }
 
   useEffect(() => {
     if (!isEditing) return
-    const hasEmptyRequiredFields = Object.values(credentials).some(v => !v)
-    const hasValidationErrors = Object.values(errors).some(Boolean)
-    setFormIsValid(!hasEmptyRequiredFields && !hasValidationErrors)
-  }, [credentials, errors, isEditing])
+    const hasEmpty = Object.values(form).some(v => !v)
+    const hasErr = Object.values(errors).some(Boolean)
+    setFormIsValid(!hasEmpty && !hasErr)
+  }, [form, errors, isEditing])
 
   const handleCancel = () => {
-    setCredentials({
-      firstName: 'Fernando',
-      lastName: 'Maionese',
-      email: 'fernando@maionese.dev',
-      password: '123456',
-      confirmPassword: ''
+    setForm({
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
+      email: user?.email || ''
     })
-    setErrors({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    })
+    setErrors({ firstName: '', lastName: '', email: '' })
+    setFormIsValid(false)
     setIsEditing(false)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     if (!formIsValid) return
-    // Aqui você pode enviar os dados atualizados
-    alert('Dados salvos com sucesso!')
-    setIsEditing(false)
+    try {
+      setIsLoading(true)
+      const updatedUser = await userService.updateProfile(user.id, form)
+      setUser(updatedUser)
+      notify(ENotifyType.SUCCESS, 'Perfil atualizado com sucesso')
+      setIsEditing(false)
+    } catch (err: any) {
+      notify(ENotifyType.ERROR, err.message || 'Erro ao atualizar perfil')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Delete account logic
+  const openDeleteDialog = () => dialogRef.current?.show()
+  const closeDeleteDialog = () => {
+    dialogRef.current?.close()
+    setDelPassword('')
+    setDelError('')
+  }
+
+  const deleteAccount = async () => {
+    try {
+      setIsLoading(true)
+      await userService.deleteProfile(user.id)
+      delStorage(EAuthTokens.TOKEN)
+      setUser(null)
+
+      navigate(ERoutes.LOGIN)
+    } catch (err: any) {
+      setDelError(err.message || 'Erro ao excluir conta')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const confirmDelete = async () => {
+    try {
+      setIsLoading(true)
+      await userService.validatePassword(user.id, delPassword)
+      await deleteAccount()
+      setForm({
+        password: ''
+      })
+      setError('')
+      navigate(ERoutes.LOGIN)
+    } catch (err: any) {
+      setDelError(err.message || 'Senha incorreta')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -95,90 +130,85 @@ const ProfileView = () => {
         <div className="profile-header">
           <h1>Perfil</h1>
           {!isEditing ? (
-            <md-filled-button type="button" onClick={() => setIsEditing(true)}>
-              <md-icon slot="icon">edit</md-icon>
-              Editar
+            <md-filled-button type="button" onClick={() => setIsEditing(true)} disabled={isLoading || isEditing}>
+              <md-icon slot="icon">edit</md-icon> Editar
             </md-filled-button>
           ) : (
             <div className="profile-actions">
-              <md-text-button onClick={handleCancel}>Cancelar</md-text-button>
-              <md-filled-button type="submit" disabled={!formIsValid}>
-                <md-icon slot="icon">save</md-icon>
-                Salvar
+              <md-text-button onClick={handleCancel} disabled={isLoading}>Cancelar</md-text-button>
+              <md-filled-button onClick={handleSubmit} disabled={!formIsValid || isLoading}>
+                <md-icon slot="icon">{ isLoading ? "sync" : "save" }</md-icon> Salvar
               </md-filled-button>
             </div>
           )}
         </div>
 
-        <form id="profile-form" className="profile-form" onSubmit={handleSubmit} autoComplete="off">
+        <form id="profile-form" className="profile-form" autoComplete="off">
           <md-outlined-text-field
             name="firstName"
             label="Nome"
-            value={credentials.firstName}
-            disabled={!isEditing}
+            value={form.firstName}
+            disabled={!isEditing || isLoading}
             onInput={handleChange}
             error={!!errors.firstName}
             error-text={errors.firstName}
             required
-            autocomplete="off"
           ></md-outlined-text-field>
+
           <md-outlined-text-field
             name="lastName"
             label="Sobrenome"
-            value={credentials.lastName}
-            disabled={!isEditing}
+            value={form.lastName}
+            disabled={!isEditing || isLoading}
             onInput={handleChange}
             error={!!errors.lastName}
             error-text={errors.lastName}
             required
-            autocomplete="off"
           ></md-outlined-text-field>
+
           <md-outlined-text-field
             name="email"
             label="Email"
             type="email"
-            value={credentials.email}
-            disabled={!isEditing}
+            value={form.email}
+            disabled={!isEditing || isLoading}
             onInput={handleChange}
             error={!!errors.email}
             error-text={errors.email}
             required
-            autocomplete="off"
           ></md-outlined-text-field>
-          <md-outlined-text-field
-            name="password"
-            label="Senha"
-            type="password"
-            value={credentials.password}
-            disabled={!isEditing}
-            onInput={handleChange}
-            error={!!errors.password}
-            error-text={errors.password}
-            required
-            autocomplete="off"
-          ></md-outlined-text-field>
-          {isEditing && (
-            <md-outlined-text-field
-              name="confirmPassword"
-              label="Confirmar Senha"
-              type="password"
-              value={credentials.confirmPassword}
-              onInput={handleChange}
-              error={!!errors.confirmPassword}
-              error-text={errors.confirmPassword}
-              required
-              autocomplete="off"
-            ></md-outlined-text-field>
-          )}
         </form>
 
-        <span className="profile-form-btn-back" onClick={() => navigate(ERoutes.DASHBOARD)}>
-          <md-icon slot="leading-icon">arrow_back</md-icon>
-          Voltar
-        </span>
+        <div className="profile-footer">
+          <span className="profile-form-btn-back" onClick={ isLoading ? undefined : () => navigate(ERoutes.DASHBOARD)}>
+            <md-icon slot="leading-icon">arrow_back</md-icon> Voltar
+          </span>
+
+          <md-filled-button class="delete-account-btn" onClick={openDeleteDialog} disabled={isLoading || isEditing}>
+            Excluir Conta
+          </md-filled-button>
+        </div>
       </div>
+
+      <md-dialog ref={dialogRef} id="delete-dialog">
+        <div slot="headline">Confirmar Exclusão</div>
+        <div slot="content">
+          <p>Digite sua senha para confirmar:</p>
+          <md-outlined-text-field
+            label="Senha"
+            type="password"
+            value={delPassword}
+            onInput={(e: any) => setDelPassword(e.target.value)}
+            error={!!delError}
+            error-text={delError}
+            required
+          ></md-outlined-text-field>
+        </div>
+        <div slot="actions">
+          <md-text-button onClick={closeDeleteDialog}>Cancelar</md-text-button>
+          <md-filled-button onClick={confirmDelete}>Confirmar</md-filled-button>
+        </div>
+      </md-dialog>
     </div>
   )
 }
-
-export default ProfileView

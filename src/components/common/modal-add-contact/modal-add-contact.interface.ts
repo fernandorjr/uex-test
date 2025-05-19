@@ -1,7 +1,6 @@
 import type { TErrorForm } from '@/types'
 export interface IModalAddContactProps {
   open: boolean
-  userId: string
   onClose: () => void
 }
 

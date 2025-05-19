@@ -108,3 +108,7 @@ md-dialog::part(container) {
   border-radius: 16px;
   padding: 0;
 }
+
+md-fab {
+  z-index: 1 !important;
+}

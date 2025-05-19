@@ -1,6 +1,6 @@
 import type { TErrorForm } from "@/types"
 
-export interface IProfileCredentials {
+export interface IProfileForm {
   firstName: string
   lastName: string
   email: string
@@ -8,4 +8,4 @@ export interface IProfileCredentials {
   confirmPassword: string
 }
 
-export type TErrorProfileForm = TErrorForm<IProfileCredentials>
+export type TErrorProfileForm = TErrorForm<IProfileForm>

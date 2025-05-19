@@ -8,7 +8,7 @@ const PrivateRoute = () => {
 
   if (checking) return <AppLoader />;
 
-  if (!user) {
+  if (!user.id) {
     return <Navigate to={ERoutes.LOGIN} replace />;
   }
 
