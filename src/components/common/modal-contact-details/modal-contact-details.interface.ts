@@ -4,4 +4,5 @@ export interface IModalContactDetailsProps {
   open: boolean
   contact: Contact | null
   onClose: () => void
+  userId: string
 }

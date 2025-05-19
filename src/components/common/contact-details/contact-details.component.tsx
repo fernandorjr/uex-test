@@ -1,17 +1,19 @@
 // @ts-nocheck
-import './contact-details.style.css'
-import { useEffect, useState } from 'react'
-import { validationService } from '@/modules/validation'
 import { Map } from '@/components/common'
-import type { IContactDetailsProps, IContactForm, TErrorContactForm } from './contact-details.interface'
-import { viaCepService } from '@/modules/via-cep'
+import useContacts from '@/hooks/contacts/contacts.hook'
 import useNotify from '@/hooks/notify/notify.hook'
 import { ENotifyType } from '@/hooks/notify/notify.interface'
 import { contactService } from '@/modules/contact'
 import type { CreateContactDto } from '@/modules/contact/contact.dtos'
+import { validationService } from '@/modules/validation'
+import { viaCepService } from '@/modules/via-cep'
+import { useEffect, useState } from 'react'
+import type { IContactDetailsProps, IContactForm, TErrorContactForm } from './contact-details.interface'
+import './contact-details.style.css'
 
 const ContactDetails = ({ contact, userId }: IContactDetailsProps) => {
   const notify = useNotify()
+  const { fetchContacts } = useContacts()
 
   const [isEditing, setIsEditing] = useState(false)
   const [formIsValid, setFormIsValid] = useState(false)
@@ -128,7 +130,9 @@ const ContactDetails = ({ contact, userId }: IContactDetailsProps) => {
     try {
       setLoading(true)
       await contactService.updateContact(userId, contact.id, form as CreateContactDto)
+      await fetchContacts(userId)
       setLoading(false)
+      setIsEditing(false)
 
       notify(ENotifyType.SUCCESS, 'Contato atualizado com sucesso!')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -136,6 +140,8 @@ const ContactDetails = ({ contact, userId }: IContactDetailsProps) => {
       console.error(error)
 
       if (error.message) notify(ENotifyType.ERROR, error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -209,10 +215,10 @@ const ContactDetails = ({ contact, userId }: IContactDetailsProps) => {
         <div>
           {isEditing && (
             <md-icon-button aria-label="Salvar" onClick={handleSubmit} disabled={!formIsValid || loading} style={{ marginRight: 4 }}>
-              <md-icon>{ loading ? 'sync' : 'save'}</md-icon>
+              <md-icon>{loading ? 'sync' : 'save'}</md-icon>
             </md-icon-button>
           )}
-          <md-icon-button aria-label={isEditing ? 'Fechar' : 'Editar'} onClick={handleToggleEdit} disabled={loading} >
+          <md-icon-button aria-label={isEditing ? 'Fechar' : 'Editar'} onClick={handleToggleEdit} disabled={loading}>
             <md-icon>{isEditing ? 'close' : 'edit'}</md-icon>
           </md-icon-button>
         </div>

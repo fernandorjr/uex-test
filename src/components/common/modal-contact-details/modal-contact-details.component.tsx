@@ -4,7 +4,7 @@ import type { IModalContactDetailsProps } from './modal-contact-details.interfac
 import ContactDetails from '../contact-details/contact-details.component'
 
 
-const ModalContactDetails: FC<IModalContactDetailsProps> = ({ open, contact, onClose }) => {
+const ModalContactDetails: FC<IModalContactDetailsProps> = ({ open, contact, onClose, userId }) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null)
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const ModalContactDetails: FC<IModalContactDetailsProps> = ({ open, contact, onC
     <md-dialog ref={dialogRef} open={open}>
       <div slot="headline">Detalhes do Contato</div>
       <div slot="content">
-        <ContactDetails contact={contact} />
+        <ContactDetails contact={contact} userId={userId} />
       </div>
       <div slot="actions">
         <md-text-button onClick={() => dialogRef.current?.close()}>Fechar</md-text-button>

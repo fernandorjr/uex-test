@@ -1,46 +1,27 @@
 // @ts-nocheck
-import { useEffect, useRef, useState } from 'react'
-import './contact-list.style.css'
 import { AppLoader, ModalAddContact } from '@/components/common'
+import useContacts from '@/hooks/contacts/contacts.hook'
+import { useEffect, useRef, useState } from 'react'
 import type { IContactListProps } from './contact-list.interface'
-import { ENotifyType } from '@/hooks/notify/notify.interface'
-import useNotify from '@/hooks/notify/notify.hook'
-import type { IContact } from '@/modules/contact/contact.interface'
-import { contactService } from '@/modules/contact'
+import './contact-list.style.css'
 
 export default function ContactList({ onSelect, userId }: IContactListProps) {
-  const notify = useNotify()
+  const { fetchContacts, loading, contacts, initialized } = useContacts()
   const inputRef = useRef(null)
   
-  const [contacts, setContacts] = useState<IContact[]>([])
+  // const [contacts, setContacts] = useState<IContact[]>([])
   const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-
+  
   const filteredContacts = contacts.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || c.cpf.includes(search))
-
+  
   useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        setLoading(true)
-        const data = await contactService.getAllContacts({ userId })
-        console.log(data);
-        setContacts(data)
-        setError(null)
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        setError('Erro ao carregar contatos')
-
-        if (error.message) notify(ENotifyType.ERROR, error.message)
-      } finally {
-        setLoading(false)
-      }
+    const fetch = async () => {
+      await fetchContacts(userId)
     }
-
-    fetchContacts()
-  }, [userId])
+    
+    fetch()
+  }, [])
 
   return (
     <div className="contact-list-container">
@@ -53,9 +34,7 @@ export default function ContactList({ onSelect, userId }: IContactListProps) {
         oninput={(e: HTMLInputElement) => setSearch(e.target.value)}
       ></md-outlined-text-field>
 
-      {loading && <AppLoader />}
-
-      {error && <div className="message-text">{error}</div>}
+      {loading && initialized && <AppLoader />}
 
       {!loading && filteredContacts.length === 0 && <div className="message-text">Nenhum contato encontrado.</div>}
 

@@ -16,7 +16,7 @@ export interface IContactForm {
 
 export interface IContactDetailsProps {
   userId: string;
-  contact: IContact;
+  contact: IContact | null;
 }
 
 export type TErrorContactForm = TErrorForm<Omit<IContactForm, 'complement'>>

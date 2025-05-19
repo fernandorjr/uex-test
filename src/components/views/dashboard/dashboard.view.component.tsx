@@ -47,6 +47,7 @@ export default function DashboardView() {
           open={isDialogOpen}
           contact={selectedContact}
           onClose={handleCloseDialog}
+          userId={user.id}
         />
       )}
     </div>
