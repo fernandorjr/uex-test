@@ -49,7 +49,7 @@ const useAuth = () => {
         })
         resolve()
       } catch (error: any) {
-        reject(new Error(error.message || 'Falha ao remover sessão'))
+        reject(new Error(error.message || 'Falha ao fazer logout'))
       }
     })
   }

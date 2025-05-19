@@ -6,7 +6,7 @@ const initialState: ISystemState = {
   refreshing: false
 }
 
-export const systemAtom = atom(initialState, (get, set, payload: Partial<ISystemStore>) => {
+export const systemAtom = atom(initialState, (get, set, payload: Partial<ISystemState>) => {
   set(systemAtom, {
     ...get(systemAtom),
     ...payload
